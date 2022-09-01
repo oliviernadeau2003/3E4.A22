@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import express from "express";
 
 const app = express();
@@ -6,8 +7,54 @@ const app = express();
 app.get("/premiere",(req,res) => {
     res.status(200);
     res.set("Content-Type","text/plain");
-    res.send("Première route avec express");
-    
+    res.send("Première route avec express"); 
+});
+
+app.get("/date",(req,res) => {
+    res.status(200);
+    res.set("Content-Type","text/plain");
+    const today = dayjs();
+    res.send(today.format("YYYY-MM-DD"));
+});
+
+app.get("/maths/:operation", (req,res) => {
+    const a = parseInt(req.query.a, 10);
+    const b = parseInt(req.query.b, 10);
+
+    let anwser = 0;
+
+    const operation = req.params.operation;
+
+    switch (operation) {
+        case "somme":
+            anwser = a + b;
+            break;
+
+        case "difference":
+            anwser = a - b;
+            break;
+
+        case "produit":
+            anwser = a * b;
+            break;
+
+        case "quotient":
+            anwser = a / b;
+            break;
+
+        case "reste":
+            anwser = b % a;
+            break;
+        
+            default:
+                anwser = "Opération non définie"
+                break;
+    }
+
+    res.status(200);
+    res.set("Content-Type","text/plain");
+    res.send(anwser.toString());
+
 });
 
 export default app;
