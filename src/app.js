@@ -1,5 +1,8 @@
 import dayjs from "dayjs";
 import express from "express";
+import router from "./routes/planets-routes.js";
+
+import planetsRoutes from "./routes/planets-routes.js";
 
 const app = express();
 
@@ -56,5 +59,7 @@ app.get("/maths/:operation", (req,res) => {
     res.send(anwser.toString());
 
 });
+
+app.use("/planets", planetsRoutes);
 
 export default app;
