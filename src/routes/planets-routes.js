@@ -1,4 +1,5 @@
 import express from 'express';
+import { HttpError } from 'http-error';
 import PLANETS from "../data/planets.js";
 
 const router = express.Router();
@@ -8,7 +9,20 @@ class PlanetsRoutes {
     constructor() {
         router.get("/", this.getAll); // /planets
         router.get("/:idPlanet", this.getOne);  // /planets/:idPlanet
-        router.post("/",this.post); // /planets
+        router.post("/", this.post); // /planets
+        router.delete("/:idPlanet",this.delete);
+    }
+
+    delete(req, req, next) {
+        const idPlanet = parsInt(req.params.idPlanet, 10);
+
+        const index = PLANETS.findIndex(p => p.id === idPlanet);
+        if(index === -1){
+            return next(HttpError.NotFound(`La planete avec l'identifiant ${idPlanet} n'existe pas`));
+        }
+        PLANETS.splice(index, 1);
+        res.status(204).end();
+
     }
 
     getAll(req, res, next) {
@@ -16,12 +30,33 @@ class PlanetsRoutes {
         res.json(PLANETS);
     }
 
+    // /planets/400
     getOne(req, res, next) {
+
+        // for(let planet of PLANETS){
+            //     if (planet.id === idPlanet) {
+                //         // Trouver la planete recherchée    
+                //         res.status(200);
+                //         res.json(planet);
+                //         break;
+                //     }
+                // }
+                // res.status(404);
+                // res.end();
+                const idPlanet = parseInt(req.params.idPlanet, 10);
+        const planet = PLANETS.filter(p => p.id === idPlanet);
+        if (planet.length > 0) {
+            res.status(200);
+            res.json(planet[0]);
+        } else {
+            return next(HttpError.NotFound(`La planete avec l'identifiant ${idPlanet} n'existe pas`));
+            
+        }
 
     }
 
     post(req, res, next) {
-        
+
     }
 
 }
