@@ -2,12 +2,15 @@ import dayjs from "dayjs";
 import express from "express";
 import router from "./routes/planets-routes.js";
 
+import database from "./libs/database.js";
+
 import httpError from "http-error"
 
 import planetsRoutes from "./routes/planets-routes.js";
 
+database();
 const app = express();
-app.use(express.json());    // *** Permet à notre serveur de comprendre le json reçu
+app.use(express.json());    // *** Permet à notre serveur de comprendre le json reçu ***
 
 //TODO: Ajouter du code ici
 app.get("/premiere", (req, res) => {
